@@ -1,0 +1,1 @@
+export const DeviceMessageReceived = "device:msg:recvd";

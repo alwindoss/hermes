@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useDeviceStore } from '../stores/device';
 
+
+const deviceStore = useDeviceStore()
 </script>
 
 <template>
@@ -12,4 +15,5 @@
         Button
     </button>
     <button class="btn btn-primary">Button</button>
+    <p>{{ deviceStore.deviceMsg }}</p>
 </template>

@@ -2,6 +2,10 @@ package main
 
 import (
 	"embed"
+	"hermes/internal/service"
+	"log/slog"
+	"net"
+	"os"
 
 	"log"
 	"time"
@@ -29,6 +33,11 @@ func init() {
 // logs any error that might occur.
 func main() {
 
+	//TODO: Replace os.Stdout with logfile in the log location
+	jsonLogger := slog.NewJSONHandler(os.Stdout, nil)
+	logger := slog.New(jsonLogger)
+	slog.SetDefault(logger)
+
 	// Create a new Wails application by providing the necessary options.
 	// Variables 'Name' and 'Description' are for application metadata.
 	// 'Assets' configures the asset server with the 'FS' variable pointing to the frontend files.
@@ -36,10 +45,11 @@ func main() {
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
 		Name:        "hermes",
-		Description: "A demo of using raw HTML & CSS",
-		Services: []application.Service{
-			application.NewService(&GreetService{}),
-		},
+		Description: "A fast, secure, cross-platform, peer-to-peer file sharing application",
+		// Services: []application.Service{
+		// 	// application.NewService(&service.GreetService{}),
+		// 	application.NewService(nwSvc),
+		// },
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
 		},
@@ -47,6 +57,11 @@ func main() {
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
 		},
 	})
+	nwSvc := service.NewNetworkService(app, &net.UDPAddr{
+		IP:   net.ParseIP("224.0.0.167"),
+		Port: 56765,
+	})
+	app.RegisterService(application.NewService(nwSvc))
 
 	// Create a new window with the necessary options.
 	// 'Title' is the title of the window.
@@ -54,7 +69,7 @@ func main() {
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
 	app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: "Window 1",
+		Title: "Hermes",
 		// Window sized to the golden ratio (1000 / 618 ≈ 1.618).
 		Width:  1000,
 		Height: 618,
