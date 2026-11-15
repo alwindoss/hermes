@@ -1,14 +1,9 @@
 <script setup lang="ts">
+import Navigation from './components/Navigation.vue';
+
 </script>
 
 <template>
-  <nav>
-    <li>
-      <ul><RouterLink to="/" >Home</RouterLink></ul>
-    </li>
-    <li>
-      <ul><RouterLink to="/settings" >Settings</RouterLink></ul>
-    </li>
-  </nav>
+  <Navigation />
   <RouterView />
 </template>
