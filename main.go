@@ -21,6 +21,9 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+//go:embed build/appicon.png
+var appIcon []byte
+
 func init() {
 	// Register a custom event whose associated data type is string.
 	// This is not required, but the binding generator will pick up registered events
@@ -55,6 +58,10 @@ func main() {
 		},
 		Mac: application.MacOptions{
 			ApplicationShouldTerminateAfterLastWindowClosed: true,
+		},
+		Icon: appIcon,
+		Linux: application.LinuxOptions{
+			ApplicationID: "com.8ideaz.hermes",
 		},
 	})
 	nwSvc := service.NewNetworkService(app, &net.UDPAddr{
