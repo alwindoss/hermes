@@ -2,6 +2,9 @@
 import {ref, onMounted, useTemplateRef} from 'vue'
 import {Events, WML} from "@wailsio/runtime";
 import {GreetService} from "../../bindings/hermes";
+import { useUserStore } from '../stores/user.js';
+
+const user = useUserStore()
 
 // Show the actual Wails version this project was generated against.
 const wailsVersion = "v3.1.0";
@@ -81,6 +84,7 @@ onMounted(() => {
 
     <h1 class="title"><span class="title-accent">Wails +</span> <span class="title-name" ref="titleNameRef"><span class="title-name-text">Vue</span></span></h1>
     <p class="subtitle">Build beautiful cross-platform apps with Go and Vue.</p>
+    <p> {{ user.userDetails.name }} </p>
 
     <div class="greet">
       <div class="input-box" id="input">
